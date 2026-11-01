@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col-12 text-center">
+      <h1 class="display-5 fw-bold mb-2">🌙 Team Management</h1>
+      <p class="text-muted mb-0">Ramadan CTF 2026 - Engineers Spark ISETcom</p>
+    </div>
+  </div>
+
+  <!-- Stats Summary -->
+  {% if teams and teams|length > 0 %}
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body py-3">
+          <div class="d-flex flex-wrap justify-content-center gap-2">
+            <span class="badge bg-primary fs-6 px-3 py-2">
+              <i class="fas fa-users me-1"></i>
+              {{ teams|length }} Teams
+            </span>
+            <span class="badge bg-success fs-6 px-3 py-2">
+              <i class="fas fa-trophy me-1"></i>
+              {{ teams|sum(attribute='score') }} Total Points
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Teams Grid -->
+  <div class="row g-4">
+    {% for team in teams %}
+    <div class="col-md-6 col-lg-4">
+      <!-- ⚠️ IMPORTANT: Copy EXACT card classes from your existing pages -->
+      <!-- Inspect scoreboard and paste classes here -->
+      <div class="card h-100 shadow-sm border-0">
+        
+        <!-- Card Header -->
+        <div class="card-header bg-transparent border-bottom py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0 fw-bold text-truncate" title="{{ team.name }}">
+              <span class="text-muted me-2">#{{ loop.index }}</span>
+              {{ team.name }}
+            </h5>
+            <span class="badge bg-primary rounded-pill fs-6 px-3">
+              {{ team.score }} pts
+            </span>
+          </div>
+        </div>
+        
+        <!-- Card Body: Members -->
+        <div class="card-body p-0">
+          <ul class="list-group list-group-flush">
+            {% for member in team.members %}
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-3 py-2">
+              <div class="d-flex align-items-center text-truncate" style="max-width: 70%;">
+                <!-- Avatar Placeholder -->
+                <span class="avatar avatar-sm bg-secondary text-white rounded-circle me-2 d-flex align-items-center justify-content-center flex-shrink-0" 
+                      style="width: 28px; height: 28px; font-size: 13px; font-weight: 600;">
+                  {{ member.name[0].upper() if member.name and member.name|length > 0 else '?' }}
+                </span>
+                <span class="fw-medium text-truncate" title="{{ member.name }}">{{ member.name }}</span>
+                {% if member.hidden %}
+                <span class="badge bg-secondary ms-2 fs-7" title="Hidden">👁️</span>
+                {% endif %}
+              </div>
+              <!-- Member Score (if exposed) -->
+              <small class="text-muted text-nowrap ms-2">
+                {% if member.score is defined and member.score is not none %}
+                  {{ member.score }} pts
+                {% else %}
+                  —
+                {% endif %}
+              </small>
+            </li>
+            {% else %}
+            <li class="list-group-item text-muted bg-transparent px-3 py-3 text-center">
+              <i class="fas fa-user-slash me-1"></i>
+              No members yet
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <!-- Card Footer -->
+        <div class="card-footer bg-transparent border-top py-2">
+          <div class="d-flex justify-content-between align-items-center small text-muted">
+            <span>
+              <i class="fas fa-flag-checkered me-1"></i>
+              {{ team.solves|length }} solves
+            </span>
+            <span>
+              <i class="fas fa-users me-1"></i>
+              {{ team.members|length }} members
+            </span>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="col-12">
+      <div class="text-center py-5">
+        <div class="mb-4">
+          <i class="fas fa-users-slash display-1 text-muted opacity-25"></i>
+        </div>
+        <h4 class="text-muted mb-3">No teams registered yet</h4>
+        <p class="text-muted mb-4">Be the first to create a team!</p>
+        {% if Configs.registration_visibility != 'private' %}
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary px-4">
+          <i class="fas fa-user-plus me-2"></i>
+          Register Now
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if page_count and page_count > 1 %}
+  <div class="row mt-5">
+    <div class="col-12">
+      <nav aria-label="Team pagination">
+        <ul class="pagination justify-content-center mb-0">
+          {% if page > 1 %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page - 1 }}"><i class="fas fa-chevron-left"></i></a>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link"><i class="fas fa-chevron-left"></i></span></li>
+          {% endif %}
+          
+          {% for p in range(1, page_count + 1) %}
+            {% if p == 1 or p == page_count or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item {{ 'active' if p == page else '' }}">
+              <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+            </li>
+            {% elif p == page - 3 or p == page + 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+          {% endfor %}
+          
+          {% if page < page_count %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page + 1 }}"><i class="fas fa-chevron-right"></i></a>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link"><i class="fas fa-chevron-right"></i></span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  console.log('Team Management page loaded');
+  console.log('Teams count:', {{ teams|length if teams else 0 }});
+</script>
+{% endblock %}

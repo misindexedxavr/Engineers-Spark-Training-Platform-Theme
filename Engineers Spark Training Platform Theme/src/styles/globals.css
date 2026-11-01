@@ -1,0 +1,25 @@
+/* Fix native select dropdown options styling */
+select option {
+  background-color: #07080a;
+  color: white;
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+  background-color: #0e1220;
+  color: #67e8f9;
+}
+
+/* Firefox */
+select option:-moz-focusring {
+  color: white;
+  background-color: #0e1220;
+}
+
+/* Webkit/Chrome/Safari */
+select option::selection {
+  background-color: #0e1220;
+  color: #67e8f9;
+}
