@@ -20,15 +20,15 @@ The following images show the theme in various states.
 
 | Screenshot | Description |
 |---|---|
-| ![ Landing Page ](../images/landing1.png) | Landing / countdown page |
-| ![ Landing Page (alt) ](../images/landing2.png) | Landing page variant |
-| ![ Challenges ](../images/challenges.png) | Challenges list page |
-| ![ Users ](../images/users.png) | Users list page |
-| ![ Profile ](../images/profile.png) | User profile page |
-| ![ Registration ](../images/register.png) | Registration page |
-| ![ Login ](../images/login.png) | Login page |
-| ![ Scoreboard ](../images/scoreboard.png) | Scoreboard page |
-| ![ Notifications ](../images/notifs.png) | Notifications dropdown |
+| ![ Landing Page ](images/landing1.png) | Landing / countdown page |
+| ![ Landing Page (alt) ](images/landing2.png) | Landing page variant |
+| ![ Challenges ](images/challenges.png) | Challenges list page |
+| ![ Users ](images/users.png) | Users list page |
+| ![ Profile ](images/profile.png) | User profile page |
+| ![ Registration ](images/register.png) | Registration page |
+| ![ Login ](images/login.png) | Login page |
+| ![ Scoreboard ](images/scoreboard.png) | Scoreboard page |
+| ![ Notifications ](images/notifs.png) | Notifications dropdown |
 
 ---
 ## Included Features
